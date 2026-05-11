@@ -139,36 +139,28 @@ curl -X POST http://localhost:3000/auth/reset-password \
 ## Project Structure
 
 ```text
-prisma/
-  schema.prisma
-src/
-  app.ts
-  server.ts
-  config/env.ts
-  lib/prisma.ts
-  middleware/requireVerifiedUser.ts
-  routes/
-    auth.ts
-    protected.ts
-  services/
-    authService.ts
-    mailService.ts
-    tokenService.ts
-  templates/
-    verificationEmail.ts
-    resetEmail.ts
+.
+├── prisma/
+│   └── schema.prisma             # Prisma SQLite schema
+├── src/
+│   ├── app.ts                    # Express app bootstrap
+│   ├── server.ts                 # HTTP server entry
+│   ├── config/
+│   │   └── env.ts                # Zod-validated environment config
+│   ├── lib/
+│   │   └── prisma.ts             # Prisma client singleton
+│   ├── middleware/
+│   │   └── requireVerifiedUser.ts # Guards protected routes
+│   ├── routes/
+│   │   ├── auth.ts               # Register/login/verify/reset endpoints
+│   │   └── protected.ts          # Authenticated protected endpoints
+│   ├── services/
+│   │   ├── authService.ts        # Core auth flow orchestration
+│   │   ├── mailService.ts        # Mailtrap email delivery
+│   │   └── tokenService.ts       # Secure token and signature helpers
+│   └── templates/
+│       ├── verificationEmail.ts  # Verification email content
+│       └── resetEmail.ts         # Password reset email content
+└── README.md
 ```
 
-## Acceptance Checklist
-
-- [x] `npm install` works
-- [x] `npm run dev` starts app
-- [x] Register sends verification email via Mailtrap
-- [x] Verification link sets `emailVerifiedAt` in SQLite
-- [x] Unverified users cannot access `GET /protected/me`
-- [x] Forgot password sends time-limited token email
-- [x] Reset link and reset endpoint update password
-- [x] Expired tokens are rejected
-- [x] All email delivery uses Mailtrap transactional API
-- [x] HTML emails provided for both flows
-- [x] Invalid/expired/used token errors are user-friendly
